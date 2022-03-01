@@ -1,0 +1,61 @@
+User Stories:
+  User Profile and their Roles
+    Given a UID, determine their information and their role/permission level
+    User Profile Table & User Role Table - Both must contain UID Column
+  Devices & their types
+    Table of Device Types
+  Assignment of Devices
+    - Who is in possession of a device?
+    - Who assigned the device?
+    - When was the device assigned?
+    - Why was the device assigned?
+    - How long is the device assigned for?
+  Data captured by Devices
+    - Readings from the device
+    - Separate table per device type
+
+Goal - Everything in moderation. Avoid duplicate data in tables without having too many tables. Take advantage of API calls to link data.
+
+Tables
+
+User Profile Table
+- User ID
+- DOB
+- Gender
+- Primary Care Physician (Should be the UID of a Doctor, or a value reserved for indicating out of system doctor?)
+- Current Diagnosis (Insurance requires official diagnosis for certain coverage)
+- Address
+- Insurance
+- Medications/Prescriptions?
+- Medical History
+- Emergency Contact
+* (All vital statistics will be pulled from measurements table using API)
+
+Device Measurements Table (1 Per Device Type, different devices need different metadata)
+- User ID
+- Device ID
+- Time (Date of Use)
+- Measurement Value
+- Units
+- Other Metadata (device dependent)
+
+Device Table (Device Management Data)
+- Ownership (UID of User Currently in possession of it)
+- Why Assigned
+- Who Assigned
+- Purchase Date
+- Date of last Service (maintenance)
+- Device ID
+- MAC Address (Array, in case of more than one NIC in a device)
+- Device location
+  - Storage?
+  - Checked out by patient?
+  - In doctor's office?
+  - Out for maintenance?
+
+Permissions Table (All columns aside from UID are binary)
+- UID
+- Doctor
+- Patient
+- Admin/Dev?
+- Outside
