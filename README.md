@@ -29,22 +29,6 @@ Current Status: Complete
 - Validates Filename
 - Validates JSON data
 - Expects the following data from all devices
-```json
-{
-    "device_entry":
-    [
-        {
-            "user_uid" : 1,
-            "device_uid" : 1,
-            "device_type" : "thermometer",
-            "msrmt_type" : "temperature",
-            "msrmt_val" : 98.6,
-            "msrmt_unit" : "fahrenheit",
-            "msrmt_date" : "12-31-2021"
-        }
-    ]
-}
-```
   - Device Entries:
     - User associated with Measurements
     - Unique Device ID
@@ -53,6 +37,23 @@ Current Status: Complete
     - Value of Measurement
     - Unit of Measurement (Must match with Device Type)
     - Date of Measurement
+  - Example Provided Below:
+  ```json
+  {
+      "device_entry":
+      [
+          {
+              "user_uid" : 1,
+              "device_uid" : 1,
+              "device_type" : "thermometer",
+              "msrmt_type" : "temperature",
+              "msrmt_val" : 98.6,
+              "msrmt_unit" : "fahrenheit",
+              "msrmt_date" : "12-31-2021"
+          }
+      ]
+  }
+  ```
 
 ### Phase 2: Char Module
 Current Status: Complete
