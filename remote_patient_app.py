@@ -1,6 +1,7 @@
 # Main Application
 # Acting as placeholder and stub function for in progress modules
-
+import sys
+sys.path.insert(0, './device_module_files')
 import device_module
 
 # Function used by all Devices to upload
