@@ -21,12 +21,30 @@ New branches will be created for each module. Once the new module has been compl
 - 17: Date
 
 ### Phase 1: Device Module
+Description: Functions used to act as an interface for supported devices to interact with the application.
+
 Current Status: Complete
 
 - Expects Data Input from device in JSON format
 - Validates Filename
 - Validates JSON data
 - Expects the following data from all devices
+```json
+{
+    "device_entry":
+    [
+        {
+            "user_uid" : 1,
+            "device_uid" : 1,
+            "device_type" : "thermometer",
+            "msrmt_type" : "temperature",
+            "msrmt_val" : 98.6,
+            "msrmt_unit" : "fahrenheit",
+            "msrmt_date" : "12-31-2021"
+        }
+    ]
+}
+```
   - Device Entries:
     - User associated with Measurements
     - Unique Device ID
