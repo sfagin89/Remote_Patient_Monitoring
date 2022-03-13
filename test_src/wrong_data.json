@@ -1,0 +1,12 @@
+{
+    "unrelated_json":
+    [
+        {
+            "device_uid" : "A",
+            "value02" : "2",
+            "value03" : "A",
+            "value04" : "3",
+            "value05" : "B"
+        }
+    ]
+}
