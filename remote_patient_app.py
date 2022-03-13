@@ -13,7 +13,6 @@ def dev_data_upload(filename):
 
     if returnCode != 0:
         print(data)
-        exit()
 
     else:
         print(data)
