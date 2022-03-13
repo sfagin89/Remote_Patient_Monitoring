@@ -10,7 +10,7 @@ import device_module
 def dev_data_upload(filename):
     returnCode, data = device_module.validate_input(filename)
 
-    if returnCode not 0:
+    if returnCode is not 0:
         print(data)
         exit()
 
