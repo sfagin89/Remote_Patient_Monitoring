@@ -1,5 +1,5 @@
 import device_module
-import json
+#import json
 def test_device_module():
     # JSON Data is not related
     #error_code, data = device_module.validate_input('wrong_data.json')

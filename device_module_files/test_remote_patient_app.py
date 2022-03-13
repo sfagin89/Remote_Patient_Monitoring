@@ -1,5 +1,5 @@
 import remote_patient_app
-import json
+#import json
 def test_remote_patient_app():
     # JSON Data is not related
     #error_code, data = device_module.validate_input('wrong_data.json')

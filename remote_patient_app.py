@@ -2,7 +2,6 @@
 # Acting as placeholder and stub function for in progress modules
 
 import device_module
-import json
 
 # Function used by all Devices to upload
 # Measurement Data
