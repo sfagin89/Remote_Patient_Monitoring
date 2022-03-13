@@ -40,7 +40,7 @@ entrySchema = {
 # Placeholder for actual database interaction
 # Currently outputs to a text file
 def to_database(valid_data):
-    with open('device_output.txt', 'x') as output_file:
+    with open('device_output.txt', 'w') as output_file:
         output_file.write(json.dumps(valid_data))
 
 # Manually Validates Data
