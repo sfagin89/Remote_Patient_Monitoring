@@ -37,6 +37,12 @@ entrySchema = {
     "required": ["user_uid", "device_uid", "device_type", "msrmt_type", "msrmt_val", "msrmt_unit", "msrmt_date"]
 }
 
+# Placeholder for actual database interaction
+# Currently outputs to a text file
+def to_database(valid_data):
+    with open('device_output.txt', 'x') as output_file:
+        output_file.write(json.dumps(valid_data))
+
 # Manually Validates Data
 def validate_data(unvalidated):
     thermometer = {"temperature": "fahrenheit"}
@@ -89,7 +95,7 @@ def validate_data(unvalidated):
 def validate_input(filename):
     try:
         with open(filename, 'r') as file:
-            # json.load() convers JSON to Python Object (type Dict)
+            # json.load() converts JSON to Python Object (type Dict)
             rawData = json.load(file)
     except IOError as err1:
         msg = ("File IO Error: Couldn't open or write to file (%s)." % err1)
@@ -99,6 +105,9 @@ def validate_input(filename):
         return 2, msg
 
     returnCode, message = validate_data(rawData)
+
+    if returnCode == 0:
+        to_database(rawData)
 
     return returnCode, message
 
