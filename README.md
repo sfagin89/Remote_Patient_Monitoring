@@ -20,10 +20,17 @@ New branches will be created for each module. Once the new module has been compl
 - 16: Measurement Unit Type
 - 17: Date
 
+2x = Format Errors for Message Packets
+- 21: Source User ID
+- 22: Destination User ID
+- 27: Date
+
+?x = Database Errors to be Added
+
 ### Phase 1: Device Module
 Description: Functions used to act as an interface for supported devices to interact with the application.
 
-Current Status: Complete
+Current Status: Functional, QoL Updates In Progress
 
 - Expects Data Input from device in JSON format
 - Validates Filename
@@ -55,7 +62,31 @@ Current Status: Complete
   }
   ```
 
-### Phase 2: Char Module
-Current Status: Complete
+### Phase 2: Chat Module
+Current Status: Functional, QoL Updates In Progress
+
+- Expects Message from User over Web GUI in JSON format
+- Validates Filename
+- Validates JSON data
+- Expects the following data from all messages
+  - Message Metadata:
+    - Source User ID of Message
+    - Destination User ID of Message
+    - Content of Message
+    - Date of Message
+  - Example Provided Below:
+  ```json
+  {
+      "message_metadata":
+      [
+          {
+              "msg_src": 1,
+              "msg_dst": 2,
+              "msg_content" : "Hello User 2!",
+              "msg_date" : "12-31-2021"
+          }
+      ]
+  }
+  ```
 
 ### Phase 3: TBA

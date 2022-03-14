@@ -2,7 +2,7 @@
 # Allows Devices to Connect to the Central System and add data
 # Expected JSON Input from All Devices
 # entry = {
-# "device_reading":
+# "device_entry":
 # [
 # {
 # "user_uid": "u###",
