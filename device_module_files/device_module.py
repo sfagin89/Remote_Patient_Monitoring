@@ -39,6 +39,17 @@ entrySchema = {
 
 # Placeholder for actual database interaction
 # Currently outputs to a text file
+def upload_data(filename):
+    code, msg = validate_input(filename)
+    if code == 0:
+        try:
+            to_database(json.load(filename))
+        except IOError as err1:
+            msg = ("File IO Error: Couldn't open or write to file (%s)." % err1)
+            return 1, msg
+        return 0, "Data Written to Database"
+    return code, msg
+
 def to_database(valid_data):
     with open('device_output.txt', 'w') as output_file:
         output_file.write(json.dumps(valid_data))
@@ -105,9 +116,6 @@ def validate_input(filename):
         return 2, msg
 
     returnCode, message = validate_data(rawData)
-
-    if returnCode == 0:
-        to_database(rawData)
 
     return returnCode, message
 
