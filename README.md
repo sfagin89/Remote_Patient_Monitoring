@@ -27,7 +27,7 @@ New branches will be created for each module. Once the new module has been compl
 
 ?x = Database Errors to be Added
 
-### Phase 1: Device Module
+## Phase 1: Device Module
 Description: Functions used to act as an interface for supported devices to interact with the application.
 
 Current Status: Functional, QoL Updates In Progress
@@ -61,8 +61,13 @@ Current Status: Functional, QoL Updates In Progress
       ]
   }
   ```
+### Device Module API
+```
+"URL" + "/device/<device_uid>" + data
+```
 
-### Phase 2: Chat Module
+
+## Phase 2: Chat Module
 Current Status: Functional, QoL Updates In Progress
 
 - Expects Message from User over Web GUI in JSON format
@@ -70,6 +75,8 @@ Current Status: Functional, QoL Updates In Progress
 - Validates JSON data
 - Expects the following data from all messages
   - Message Metadata:
+    - Session ID of Message
+    - Message ID of Message
     - Source User ID of Message
     - Destination User ID of Message
     - Content of Message
@@ -80,6 +87,8 @@ Current Status: Functional, QoL Updates In Progress
       "message_metadata":
       [
           {
+              "ses_id": 1,
+              "msg_id": 2,
               "msg_src": 1,
               "msg_dst": 2,
               "msg_content" : "Hello User 2!",
@@ -88,5 +97,16 @@ Current Status: Functional, QoL Updates In Progress
       ]
   }
   ```
+### Chat Module API
+```
+"URL" + "/chat/<session_id>/<message_id>" + data
+```
 
-### Phase 3: TBA
+### JSON Validator API
+```
+"URL" + "/chat-validate/" + json_file
+"URL" + "/device-validate/" + json_file
+```
+
+
+## Phase 3: TBA

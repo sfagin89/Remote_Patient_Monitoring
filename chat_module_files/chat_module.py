@@ -5,8 +5,10 @@
 # "message_metadata":
 # [
 # {
-# "msg_src": "u###",
-# "msg_dst": "u###",
+# "ses_id": "###",
+# "msg_id": "###",
+# "msg_src": "###",
+# "msg_dst": "###",
 # "msg_content": "string",
 # "msg_date": "mm/dd/yyyy"
 # }
@@ -20,6 +22,8 @@ from datetime import datetime
 def validate_msg(unvalidated):
 
     for message in unvalidated['message_metadata']:
+        session_id = message['ses_id']
+        message_id = message['msg_id']
         src_id = message['msg_src']
         dst_id = message['msg_dst']
         content = message['msg_content']
@@ -33,6 +37,14 @@ def validate_msg(unvalidated):
     if isinstance(dst_id, int) == False:
         return 22, "Destination User ID is not a number value"
 
+    # Validate that ses_id is a number
+    if isinstance(session_id, int) == False:
+        return 23, "Session ID is not a number value"
+
+    # Validate that msg_id is a number
+    if isinstance(message_id, int) == False:
+        return 24, "Message ID is not a number value"
+
     # Sanitize Message against SQL Injections
     # To Be Done at Later Date
 
@@ -42,7 +54,8 @@ def validate_msg(unvalidated):
     except ValueError:
         return 27, "Date is not formatted correctly, must be in the format mm-dd-yyyy"
 
-    return 0, "JSON data successfully validated"
+    validated = unvalidated
+    return 0, validated
 
 # Validates Input File, checking for valid file path, JSON structure & Schema
 def validate_input(filename):

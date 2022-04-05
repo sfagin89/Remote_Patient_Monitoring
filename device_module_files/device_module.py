@@ -100,7 +100,8 @@ def validate_data(unvalidated):
     except ValueError:
         return 17, "Date is not formatted correctly, must be in the format mm-dd-yyyy"
 
-    return 0, "JSON data successfully validated"
+    valiated = unvalidated
+    return 0, validated
 
 # Validates Input File, checking for valid file path, JSON structure & Schema
 def validate_input(filename):

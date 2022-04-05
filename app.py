@@ -11,34 +11,35 @@ import chat_module
 app = Flask(__name__)
 api = Api(app, catch_all_404s=True)
 
-#@app.route('/')
-#def index():
-#    return render_template('index.html')
+###################
+# Data Structures #
+###################
 
-#@app.route('/device_interface')
-#def device_interface():
-#    return render_template('device_interface.html')
+dev_reg = {}
+chat_sessions = {}
 
-#@app.route('/chat_interface')
-#def chat_interface():
-#    return render_template('chat_interface.html')
+#######################################
+# Put Argument Rules for Data Parsing #
+#######################################
 
-#@app.route('/user_interface')
-#def user_interface():
-#    return "User Interface, Coming Soon"
+# Rules for put arguments for Device Module
+put_device = reqparse.RequestParser()
+put_device.add_argument("user_uid", type=int, required=True)
+put_device.add_argument("device_uid", type=int, required=True)
+put_device.add_argument("device_type", type=str, required=True)
+put_device.add_argument("msrmt_type", type=str, required=True)
+put_device.add_argument("msrmt_val", type=int, required=True)
+put_device.add_argument("msrmt_unit", type=str, required=True)
+put_device.add_argument("msrmt_date", type=str, required=True)
 
-
-# chat interface page rule.
-#@app.route('/chat_interface/<path>', defaults={'path_flag':0})
-#@app.route('/chat_interface/<path>/<path_flag>')
-#def flask_validate_chat_json(path, path_flag):
-#    return str(validate_chat_json(path, int(path_flag)))
-
-# device interface page rule.
-#@app.route('/device_interface/<path>', defaults={'path_flag':0})
-#@app.route('/device_interface/<path>/<path_flag>')
-#def flask_validate_device_json(path, path_flag):
-#    return str(validate_device_json(path, int(path_flag)))
+# Rules for put arguments for Chat Module
+put_chat = reqparse.RequestParser()
+put_chat.add_argument("ses_id", type=int, required=True)
+put_chat.add_argument("msg_id", type=int, required=True)
+put_chat.add_argument("msg_src", type=int, required=True)
+put_chat.add_argument("msg_dst", type=int, required=True)
+put_chat.add_argument("msg_content", type=str, required=True)
+put_chat.add_argument("msg_date", type=str, required=True)
 
 ####################
 # Helper Functions #
@@ -67,8 +68,55 @@ class HomePage(Resource):
     def get(self):
         return "Home Page"
 
+class Device(Resource):
+    def get(self, device_uid):
+        if device_uid not in devices:
+            abort(404, message="device not registered")
+        else:
+            return dev_reg[device_uid]
+    def put(self, device_uid):
+        if device_uid in devices:
+            abort(404, message="device already registered")
+        else:
+            data = put_device.parse_args()
+            dev_reg[device_uid] = data
+            return dev_reg[device_uid], 201
+    def delete(self, device_uid):
+        if device_uid not in devices:
+            abort(404, message="device not registered")
+        else:
+            del dev_reg[device_uid]
+            return '', 204
 
-class ValidateDeviceJSON(Resource):
+class Chat(Resource):
+    def get(self, ses_id, msg_id):
+        if ses_id not in chat_sessions:
+            abort(404, message="session does not exist")
+        else:
+            if msg_id not in chat_sessions[ses_id]:
+                abort(404, message="message does not exist within current session")
+            else:
+                return chat_sessions[ses_id[msg_id]]
+    def put(self, ses_id, msg_id):
+        if ses_id in chat_sessions:
+            if msg_id in chat_sessions[ses_id]:
+                abort(404, message="message already exists within current session")
+            else:
+                data = put_chat.parse_args()
+                chat_sessions[ses_id[msg_id]] = data
+                return chat_sessions[ses_id[msg_id]], 201
+        else:
+            data = put_chat.parse_args()
+            chat_sessions[ses_id[msg_id]] = data
+            return chat_sessions[ses_id[msg_id]], 201
+    def delete(self, ses_id, msg_id):
+        if ses_id not in chat_sessions:
+            abort(404, message="session does noe exist")
+        else:
+            del chat_sessions[ses_id]
+            return '', 204
+
+class ValidateDevice(Resource):
     def get(self, json_file):
         returnCode, message = device_module.validate_input(json_file)
 
@@ -80,7 +128,7 @@ class ValidateDeviceJSON(Resource):
                     "data": json_file}
 
 
-class ValidateChatJSON(Resource):
+class ValidateChat(Resource):
     def get(self, json_file):
         returnCode, message = chat_module.validate_input(json_file)
 
@@ -91,27 +139,18 @@ class ValidateChatJSON(Resource):
                     "message": message,
                     "data": json_file}
 
-
-class UploadDeviceMeasurements(Resource):
-    def post(self, json_file):
-        returnCode, message = device_module.upload_data(json_file)
-
-        if api_call_successful(return_code=returnCode,
-                               msg=message):
-
-            return {"result": returnCode,
-                    "message": message,
-                    "data": json_file}
-
-
+# endpont for default homepage
 api.add_resource(HomePage, "/")
 
-# endpoints for device module
-api.add_resource(ValidateDeviceJSON, "/device/validate/<string:json_file>")
-api.add_resource(UploadDeviceMeasurements, "/device/uploadmeasurements/<string:json_file>")
+# endpoint for device module
+api.add_resource(Device, "/device/<string:device_uid>")
 
-# endpoints for chat module
-api.add_resource(ValidateChatJSON, "/chat/validate/<string:chat_json>")
+# endpoint for chat module
+api.add_resource(Chat, "/chat/<string:ses_id>/<string:msg_id>")
+
+# endpoints for JSON Validation
+api.add_resource(ValidateDevice, "/chat-validate/<string:json_file>")
+api.add_resource(ValidateChat, "/device-validate/<string:json_file>")
 
 if __name__ == '__main__':
     app.run(debug=True)
