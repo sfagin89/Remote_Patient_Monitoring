@@ -70,19 +70,19 @@ class HomePage(Resource):
 
 class Device(Resource):
     def get(self, device_uid):
-        if device_uid not in devices:
+        if device_uid not in dev_reg:
             abort(404, message="device not registered")
         else:
             return dev_reg[device_uid]
     def put(self, device_uid):
-        if device_uid in devices:
+        if device_uid in dev_reg:
             abort(404, message="device already registered")
         else:
             data = put_device.parse_args()
             dev_reg[device_uid] = data
             return dev_reg[device_uid], 201
     def delete(self, device_uid):
-        if device_uid not in devices:
+        if device_uid not in dev_reg:
             abort(404, message="device not registered")
         else:
             del dev_reg[device_uid]
